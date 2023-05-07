@@ -1,4 +1,4 @@
-insert into tabnewfeed
+insert into tabnewfeeduser
 (
 tciNewfeedUserActv,
 tcsNewfeedUserName,

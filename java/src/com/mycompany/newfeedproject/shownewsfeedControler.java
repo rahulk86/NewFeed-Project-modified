@@ -28,28 +28,23 @@ public class shownewsfeedControler {
           int NewFeedPostLstLength = svoNewFeedPostLst.size();
           
          for (int indx = 1; indx<=NewFeedPostLstLength;indx++) {
-             NewFeedPost svoNewFeedPost = svoNewFeedPostLst.get(indx-1);
+             NewFeedPost svoNewFeedPost = svoNewFeedPostLst.get(indx - 1);
              String svsNewFeedUserName = svoNewFeedPost.getNewFeedUser().getNewFeedUserName();
              int sviUpVoteCount = svoNewFeedPost.getUpVoteCount();
              int sviDwnVoteCount = svoNewFeedPost.getDwnVoteCount();
              int sviCmntCount = svoNewFeedPost.getCmntCount();
              String postDateTime = "";
-             LocalDateTime svoNewFeedPostDate = svoNewFeedPost.getNewFeedPostDate();
-             LocalDateTime svoNowDateTime = LocalDateTime.now();
-             if((svoNowDateTime.getYear()-svoNewFeedPostDate.getYear())>0){
-                 postDateTime = (svoNowDateTime.getYear()-svoNewFeedPostDate.getYear())+"yr ago";
-             }
-             else if((svoNowDateTime.getMonthValue()-svoNewFeedPostDate.getMonthValue())>0){
-                 postDateTime = (svoNowDateTime.getMonthValue()-svoNewFeedPostDate.getMonthValue())+"mnth ago";
-             }
-             else if((svoNowDateTime.getDayOfMonth()-svoNewFeedPostDate.getDayOfMonth())>0){
-                 postDateTime = (svoNowDateTime.getDayOfMonth()-svoNewFeedPostDate.getDayOfMonth())+"dy ago";
-             }
-             else if((svoNowDateTime.getHour()-svoNewFeedPostDate.getHour())>0){
-                 postDateTime = (svoNowDateTime.getHour()-svoNewFeedPostDate.getHour())+"hr ago";
-             }
-             else{
-                 postDateTime = (svoNowDateTime.getMinute()-svoNewFeedPostDate.getMinute())+"m ago"; 
+             DbManager.DBdateTime svoDBdateTime = DbManager.diffLocalDateTime(svoNewFeedPost.getNewFeedPostDate(), LocalDateTime.now());
+             if (svoDBdateTime.getDBYear() > 0) {
+                 postDateTime = svoDBdateTime.getDBYear() + "yr ago";
+             } else if (svoDBdateTime.getDBMonth() > 0) {
+                 postDateTime = svoDBdateTime.getDBMonth() + "mnth ago";
+             } else if (svoDBdateTime.getDBDay() > 0) {
+                 postDateTime = svoDBdateTime.getDBDay() + "dy ago";
+             } else if (svoDBdateTime.getDBHour() > 0) {
+                 postDateTime = svoDBdateTime.getDBHour() + "hr ago";
+             } else {
+                 postDateTime = svoDBdateTime.getDBMinutes() + "m ago";
              }
              System.out.println();
              System.out.println();

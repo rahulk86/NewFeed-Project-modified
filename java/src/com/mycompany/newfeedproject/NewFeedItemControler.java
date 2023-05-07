@@ -1,6 +1,7 @@
 
 package com.mycompany.newfeedproject;
 
+import com.mycompany.newfeedproject.DbManager.DBdateTime;
 import java.io.FileNotFoundException;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
@@ -26,18 +27,17 @@ public class NewFeedItemControler {
             int sviDwnVoteCount = pvoNewFeedPost.getDwnVoteCount();
             int sviCmntCount = pvoNewFeedPost.getCmntCount();
             String postDateTime = "";
-            LocalDateTime svoNewFeedPostDate = pvoNewFeedPost.getNewFeedPostDate();
-            LocalDateTime svoNowDateTime = LocalDateTime.now();
-            if ((svoNowDateTime.getYear() - svoNewFeedPostDate.getYear()) > 0) {
-                postDateTime = (svoNowDateTime.getYear() - svoNewFeedPostDate.getYear()) + "yr ago";
-            } else if ((svoNowDateTime.getMonthValue() - svoNewFeedPostDate.getMonthValue()) > 0) {
-                postDateTime = (svoNowDateTime.getMonthValue() - svoNewFeedPostDate.getMonthValue()) + "mnth ago";
-            } else if ((svoNowDateTime.getDayOfMonth() - svoNewFeedPostDate.getDayOfMonth()) > 0) {
-                postDateTime = (svoNowDateTime.getDayOfMonth() - svoNewFeedPostDate.getDayOfMonth()) + "dy ago";
-            } else if ((svoNowDateTime.getHour() - svoNewFeedPostDate.getHour()) > 0) {
-                postDateTime = (svoNowDateTime.getHour() - svoNewFeedPostDate.getHour()) + "hr ago";
+            DBdateTime svoDBdateTime =   DbManager.diffLocalDateTime(pvoNewFeedPost.getNewFeedPostDate(), LocalDateTime.now());
+            if (svoDBdateTime.getDBYear()> 0) {
+                postDateTime = svoDBdateTime.getDBYear() + "yr ago";
+            } else if (svoDBdateTime.getDBMonth() > 0) {
+                postDateTime = svoDBdateTime.getDBMonth()+ "mnth ago";
+            } else if (svoDBdateTime.getDBDay()> 0) {
+                postDateTime = svoDBdateTime.getDBDay() + "dy ago";
+            } else if (svoDBdateTime.getDBHour()> 0) {
+                postDateTime = svoDBdateTime.getDBHour()+ "hr ago";
             } else {
-                postDateTime = (svoNowDateTime.getMinute() - svoNewFeedPostDate.getMinute()) + "m ago";
+                postDateTime = svoDBdateTime.getDBMinutes()+ "m ago";
             }
             String svoExit   = "1.[Exit]";
             String svoFollow = "";
@@ -142,18 +142,17 @@ public class NewFeedItemControler {
        int sviDwnVoteCount = pvoNewFeedPost.getDwnVoteCount();
        int sviCmntCount = pvoNewFeedPost.getCmntCount();
        String postDateTime = "";
-       LocalDateTime svoNewFeedPostDate = pvoNewFeedPost.getNewFeedPostDate();
-       LocalDateTime svoNowDateTime = LocalDateTime.now();
-       if ((svoNowDateTime.getYear() - svoNewFeedPostDate.getYear()) > 0) {
-           postDateTime = (svoNowDateTime.getYear() - svoNewFeedPostDate.getYear()) + "yr ago";
-       } else if ((svoNowDateTime.getMonthValue() - svoNewFeedPostDate.getMonthValue()) > 0) {
-           postDateTime = (svoNowDateTime.getMonthValue() - svoNewFeedPostDate.getMonthValue()) + "mnth ago";
-       } else if ((svoNowDateTime.getDayOfMonth() - svoNewFeedPostDate.getDayOfMonth()) > 0) {
-           postDateTime = (svoNowDateTime.getDayOfMonth() - svoNewFeedPostDate.getDayOfMonth()) + "dy ago";
-       } else if ((svoNowDateTime.getHour() - svoNewFeedPostDate.getHour()) > 0) {
-           postDateTime = (svoNowDateTime.getHour() - svoNewFeedPostDate.getHour()) + "hr ago";
+       DBdateTime svoDBdateTime = DbManager.diffLocalDateTime(pvoNewFeedPost.getNewFeedPostDate(), LocalDateTime.now());
+       if (svoDBdateTime.getDBYear() > 0) {
+           postDateTime = svoDBdateTime.getDBYear() + "yr ago";
+       } else if (svoDBdateTime.getDBMonth() > 0) {
+           postDateTime = svoDBdateTime.getDBMonth() + "mnth ago";
+       } else if (svoDBdateTime.getDBDay() > 0) {
+           postDateTime = svoDBdateTime.getDBDay() + "dy ago";
+       } else if (svoDBdateTime.getDBHour() > 0) {
+           postDateTime = svoDBdateTime.getDBHour() + "hr ago";
        } else {
-           postDateTime = (svoNowDateTime.getMinute() - svoNewFeedPostDate.getMinute()) + "m ago";
+           postDateTime = svoDBdateTime.getDBMinutes() + "m ago";
        }
        String svoFollow = "";
        if (cvoNewFeedUser.isFollow(pvoNewFeedPost.getNewFeedUser())) {
@@ -189,28 +188,23 @@ public class NewFeedItemControler {
              int NewFeedCmntLstLength = svoNewFeedCmntLst.size();
           NewFeedItemcommentsExit = false;
          for (int indx = 1; indx<=NewFeedCmntLstLength;indx++) {
-             NewFeedCmnt svoNewFeedCmnt = svoNewFeedCmntLst.get(indx-1);
-             svsNewFeedUserName         = svoNewFeedCmnt.getNewFeedUser().getNewFeedUserName();
-             sviUpVoteCount             = svoNewFeedCmnt.getUpVoteCount();
-             sviDwnVoteCount            = svoNewFeedCmnt.getDwnVoteCount();
-             sviCmntCount               = svoNewFeedCmnt.getRplyCount();
+             NewFeedCmnt svoNewFeedCmnt = svoNewFeedCmntLst.get(indx - 1);
+             svsNewFeedUserName = svoNewFeedCmnt.getNewFeedUser().getNewFeedUserName();
+             sviUpVoteCount = svoNewFeedCmnt.getUpVoteCount();
+             sviDwnVoteCount = svoNewFeedCmnt.getDwnVoteCount();
+             sviCmntCount = svoNewFeedCmnt.getRplyCount();
              postDateTime = "";
-             svoNewFeedPostDate = svoNewFeedCmnt.getNewFeedCmntDate();
-             svoNowDateTime = LocalDateTime.now();
-             if((svoNowDateTime.getYear()-svoNewFeedPostDate.getYear())>0){
-                 postDateTime = (svoNowDateTime.getYear()-svoNewFeedPostDate.getYear())+"yr ago";
-             }
-             else if((svoNowDateTime.getMonthValue()-svoNewFeedPostDate.getMonthValue())>0){
-                 postDateTime = (svoNowDateTime.getMonthValue()-svoNewFeedPostDate.getMonthValue())+"mnth ago";
-             }
-             else if((svoNowDateTime.getDayOfMonth()-svoNewFeedPostDate.getDayOfMonth())>0){
-                 postDateTime = (svoNowDateTime.getDayOfMonth()-svoNewFeedPostDate.getDayOfMonth())+"dy ago";
-             }
-             else if((svoNowDateTime.getHour()-svoNewFeedPostDate.getHour())>0){
-                 postDateTime = (svoNowDateTime.getHour()-svoNewFeedPostDate.getHour())+"hr ago";
-             }
-             else{
-                 postDateTime = (svoNowDateTime.getMinute()-svoNewFeedPostDate.getMinute())+"m ago"; 
+             svoDBdateTime = DbManager.diffLocalDateTime(pvoNewFeedPost.getNewFeedPostDate(), LocalDateTime.now());
+             if (svoDBdateTime.getDBYear() > 0) {
+                 postDateTime = svoDBdateTime.getDBYear() + "yr ago";
+             } else if (svoDBdateTime.getDBMonth() > 0) {
+                 postDateTime = svoDBdateTime.getDBMonth() + "mnth ago";
+             } else if (svoDBdateTime.getDBDay() > 0) {
+                 postDateTime = svoDBdateTime.getDBDay() + "dy ago";
+             } else if (svoDBdateTime.getDBHour() > 0) {
+                 postDateTime = svoDBdateTime.getDBHour() + "hr ago";
+             } else {
+                 postDateTime = svoDBdateTime.getDBMinutes() + "m ago";
              }
              System.out.println();
              System.out.println("-".repeat(MAX_LENGTH));

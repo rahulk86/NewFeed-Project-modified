@@ -111,7 +111,7 @@ public class NewFeedUser {
                 svoNewFeedUser.cvoFollowing.put(svoFollowNewFeedUser.cvsNewFeedUserId, svoFollowNewFeedUser);
             }
         }
-        return svoNewFeedUser;
+        return svoNewFeedUser==null?new NewFeedUser(pvoDbManager):svoNewFeedUser;
     }
     public void save() throws FileNotFoundException, SQLException{
         cvoDbManager.addContextParm("<rvsNewfeedUserName>",   cvsNewFeedUserName);
